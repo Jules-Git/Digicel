@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  selector:
+    app: nginx
+  ports:
+  - name: web
+    port: 80
+    targetPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  rules:
+  - host: nginx.digicel.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx
+          servicePort: web

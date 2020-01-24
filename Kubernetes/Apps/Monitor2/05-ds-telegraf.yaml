@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: telegraf
+  labels:
+    name: telegraf
+spec:
+  selector:
+    matchLabels:
+      name: telegraf
+  template:
+    metadata:
+      labels:
+        name: telegraf
+    spec:
+      containers:
+        - image: easylinux/kubernetes:telegraf
+          name: telegraf
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "55M"
+            limits:
+              cpu: "500m"
+              memory: "128M"
+          env:
+            - name: INFLUXDB_HOST
+              value: influxdb 
+            - name: INFLUXDB_PORT
+              value: "8086" 
+            - name: INFLUXDB_NAME
+              value: Monitor
+            - name: INFLUXDB_USER
+              value: Monitor
+            - name: INFLUXDB_PASSWORD
+              value: Secr3t
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker
+
+      volumes:
+        - name: docker
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket

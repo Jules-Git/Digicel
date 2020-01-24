@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  grafana
+  labels:
+    name:  grafana
+spec:
+  selector:
+    matchLabels:
+      name: grafana
+  template:
+    metadata:
+      labels:
+        name:  grafana
+    spec:
+      containers:
+      - image:  easylinux/kubernetes:grafana
+        name:  grafana
+        # resources:
+        #   requests:
+        #     cpu: "20m"
+        #     memory: "55M"
+        #   limits:
+        #     cpu: "1"
+        #     memory: "512M"
+        ports:
+        - containerPort:  3000
+          name:  http
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name: conf 
+
+      volumes:
+        - name: conf
+          hostPath:
+            path: /Data/Grafana
+            type: DirectoryOrCreate

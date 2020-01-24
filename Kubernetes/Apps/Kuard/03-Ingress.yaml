@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kuard
+  namespace: default
+spec:
+  rules:
+  - host: kuard.neosoft.lan
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kuard
+          servicePort: http
